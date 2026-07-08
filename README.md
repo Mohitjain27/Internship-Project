@@ -49,16 +49,16 @@ InternIQ Portal runs as a single self-contained web application: a Python backen
 
 ```
 InternIQ_Portal_Project/
-├── server.py              # Backend: static file server + JSON API
-├── .env                   # Stores GEMINI_API_KEY (not committed)
+├── server.py              
+├── .env                   
 ├── website/
 │   ├── index.html
 │   ├── style.css
 │   └── app.js
-└── data/                  # Created automatically on first run
+└── data/                  
     ├── internships.json
     ├── applications.json
-    └── resumes/           # Uploaded candidate resume PDFs
+    └── resumes/           
 ```
 
 ## Getting started
