@@ -1,0 +1,68 @@
+[
+  {
+    "id": "int_1",
+    "title": "Machine Learning Intern",
+    "company": "Nexus Analytics",
+    "category": "Data Science / ML",
+    "location": "Bengaluru (Office)",
+    "duration": "6 Months",
+    "stipend": "₹35,000 / month",
+    "skills": ["Python", "PyTorch", "scikit-learn", "SQL", "Machine Learning"],
+    "description": "Join our ML Platform team to design and build scalable predictive models, collaborate with data engineers to deploy models, and work on data cleaning pipelines.",
+    "eligibility": "B.Tech/M.Tech in Computer Science or related fields with solid programming background.",
+    "posted_at": "2026-07-08"
+  },
+  {
+    "id": "int_2",
+    "title": "Frontend Development Intern (React)",
+    "company": "CloudScale Tech",
+    "category": "Frontend Development",
+    "location": "Remote",
+    "duration": "3 Months",
+    "stipend": "₹20,000 / month",
+    "skills": ["JavaScript", "TypeScript", "React", "HTML", "CSS"],
+    "description": "We are seeking a React Developer intern to craft interactive components, optimize user interfaces, and collaborate with product designers to implement pixel-perfect web screens.",
+    "eligibility": "Self-taught developers or students with active portfolios demonstrating React/JS apps.",
+    "posted_at": "2026-07-08"
+  },
+  {
+    "id": "int_3",
+    "title": "Product Management Intern",
+    "company": "Cognitive Loop Inc",
+    "category": "Product Management",
+    "location": "Mumbai (Office)",
+    "duration": "4 Months",
+    "stipend": "₹25,000 / month",
+    "skills": ["Product Strategy", "User Research", "SQL", "Agile / Scrum"],
+    "description": "Assist our Product Lead with market analysis, write detailed product requirement documents (PRDs), run user feedback sessions, and coordinate with developers.",
+    "eligibility": "MBA candidates or B.Tech graduates with strong communication and analytical skills.",
+    "posted_at": "2026-07-08"
+  },
+  {
+    "id": "int_4",
+    "title": "Backend Development Intern (Python)",
+    "company": "DataVibe Systems",
+    "category": "Backend Development",
+    "location": "Remote",
+    "duration": "6 Months",
+    "stipend": "₹28,000 / month",
+    "skills": ["Python", "FastAPI", "PostgreSQL", "Docker", "Git"],
+    "description": "Collaborate on database design, optimize APIs, deploy server microservices in Docker containers, and write unit tests.",
+    "eligibility": "Active CS/IT undergraduate students with backend project portfolios on GitHub.",
+    "posted_at": "2026-07-08"
+  },
+  {
+    "id": "int_5",
+    "title": "UI/UX Design Intern",
+    "company": "FigmaCraft Agency",
+    "category": "UI/UX Design",
+    "location": "Mumbai (Office)",
+    "duration": "3 Months",
+    "stipend": "₹18,000 / month",
+    "skills": ["Figma", "User Research", "Wireframing", "Prototyping", "Design Systems"],
+    "description": "Conduct competitor research, create wireframes and high-fidelity interactive prototypes in Figma, and build out design systems for mobile and web apps.",
+    "eligibility": "Design school students or visual artists with portfolio links demonstrating UI/UX layouts.",
+    "posted_at": "2026-07-08"
+  }
+]
+

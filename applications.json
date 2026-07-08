@@ -1,0 +1,47 @@
+[
+  {
+    "id": "app_1783510708895",
+    "internship_id": "int_2",
+    "name": "Ram",
+    "email": "ram@gmail.com",
+    "resume_file": "app_1783510708895_10219099.pdf",
+    "status": "Under Review",
+    "applied_at": "2026-07-08 17:08:28",
+    "score": 0,
+    "justification": "The candidate's extensive experience is in equipment engineering, mechanical, and production control, with no mention of frontend development skills like JavaScript, React, HTML, or CSS. The profile does not meet the core technical skill requirements or the eligibility criteria for demonstrating React/JS apps.",
+    "matched_skills": [],
+    "missing_skills": [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "HTML",
+      "CSS"
+    ]
+  },
+  {
+    "id": "app_1783513807564",
+    "internship_id": "int_5",
+    "name": "Mohit Jain",
+    "email": "mohit@gmail.com",
+    "resume_file": "app_1783513807564_10030015.pdf",
+    "status": "Rejected",
+    "applied_at": "2026-07-08 18:00:07",
+    "score": 5,
+    "justification": "The candidate possesses a strong background in engineering lab work, specifically in aerospace and munitions, but completely lacks the specific UI/UX design skills and experience required for this internship. There is no mention of Figma, user research, wireframing, prototyping, or design systems, nor does the candidate meet the eligibility criteria for design school students or visual artists with a portfolio.",
+    "matched_skills": [],
+    "missing_skills": [
+      "Figma",
+      "User Research",
+      "Wireframing",
+      "Prototyping",
+      "Design Systems"
+    ],
+    "interview_questions": [
+      "Can you describe your interest in UI/UX design and what specifically motivated you to apply for this internship, given your extensive background in engineering and technical roles?",
+      "The internship requires proficiency in tools like Figma and concepts such as wireframing and prototyping. Have you had any personal projects, self-study, or informal experiences in these areas?",
+      "While your resume highlights strong problem-solving in a technical context, how do you envision transferring these analytical skills to identifying and addressing user experience challenges?",
+      "The role involves building out design systems for mobile and web apps. What is your current understanding of design systems, and how would you approach learning to contribute effectively?",
+      "The eligibility criteria mention design school students or visual artists with a portfolio demonstrating UI/UX layouts. What steps are you currently taking or planning to take to build such a portfolio?"
+    ]
+  }
+]
