@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InternIQ — AI-Powered Internship Portal</title>
+  <meta name="description" content="Intelligent internship portal matching candidates with employers using Google Gemini AI screening." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=4" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HR / STUDENT LOGIN SCREEN
+══════════════════════════════════════════ -->
+<div class="login-wrapper" id="login-wrapper">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="url(#lg_login)" stroke-width="2.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        <defs>
+          <linearGradient id="lg_login" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#06b6d4"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <h2 class="login-title">InternIQ Portal</h2>
+    <p class="login-subtitle">Intelligent Internship Workspace</p>
+
+    <!-- Role Tabs -->
+    <div class="login-role-tabs">
+      <button class="login-role-btn active" id="login-role-student" onclick="setLoginRole('student')">👨‍🎓 Student</button>
+      <button class="login-role-btn" id="login-role-employer" onclick="setLoginRole('employer')">💼 Employer</button>
+    </div>
+
+    <div class="login-form-group">
+      <label class="login-label">Email Address</label>
+      <input type="email" id="login-email" class="login-input" placeholder="student@interniq.com" value="" />
+    </div>
+
+    <div class="login-form-group">
+      <label class="login-label">Password</label>
+      <div class="login-input-wrap">
+        <input type="password" id="login-password" class="login-input" placeholder="••••••••" value="" />
+        <button class="login-eye-btn" onclick="togglePasswordVisibility()" type="button">
+          <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <button class="login-btn" id="login-btn" onclick="handleLogin()" type="button">
+      <span>Sign In</span>
+    </button>
+
+    <div class="demo-helper" onclick="useDemoCredentials()">
+      💡 Auto-fill Demo credentials for <span id="demo-role-text">Student</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTAINER WRAPPER
+══════════════════════════════════════════ -->
+<div id="app-layout-wrapper" style="display: none; width: 100%; min-height: 100vh; flex-direction: column;">
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <span class="logo-text">InternIQ</span>
+  </div>
+  
+  <div class="header-actions">
+    <!-- Mode Switcher -->
+    <div class="mode-toggle" id="mode-toggle-container">
+      <button class="mode-btn active" id="mode-btn-student" onclick="togglePortalMode('student')">👨‍🎓 Student Mode</button>
+      <button class="mode-btn" id="mode-btn-employer" onclick="togglePortalMode('employer')">💼 Employer Mode</button>
+    </div>
+    
+    <button class="icon-btn" onclick="openSettings()" title="Settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="app-layout">
+  <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <!-- Student Sidebar Options -->
+    <nav class="sidebar-nav" id="sidebar-student">
+      <button class="nav-item active" id="nav-stud-search" onclick="switchStudentView('search')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Find Internships</span>
+      </button>
+      <button class="nav-item" id="nav-stud-apps" onclick="switchStudentView('applications')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>My Applications</span>
+      </button>
+      <button class="nav-item" id="nav-stud-prep" onclick="switchStudentView('prep')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z"/></svg>
+        <span>Question Bank Prep</span>
+      </button>
+    </nav>
+    
+    <!-- Employer Sidebar Options -->
+    <nav class="sidebar-nav" id="sidebar-employer" style="display:none;">
+      <button class="nav-item active" id="nav-emp-roles" onclick="switchEmployerView('roles')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span>Manage Postings</span>
+      </button>
+      <button class="nav-item" id="nav-emp-post" onclick="switchEmployerView('post')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Post New Internship</span>
+      </button>
+      <button class="nav-item" id="nav-emp-saved" onclick="switchEmployerView('saved')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span>Saved Reports</span>
+      </button>
+    </nav>
+
+    <button class="nav-item" onclick="handleLogout()" style="color:var(--red);margin-top:auto;width:100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span>Sign Out</span>
+    </button>
+
+    <div class="sidebar-footer">
+      <div class="api-status">
+        <span class="status-dot offline" id="status-dot"></span>
+        <span id="status-label">GenAI disconnected</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════ -->
+  <main class="main">
+    
+    <!-- ──────────────────────────────────────────
+         STUDENT VIEWPORT
+    ────────────────────────────────────────── -->
+    <div id="portal-student" class="portal-viewport">
+      
+      <!-- Student View: Search Panel -->
+      <section class="view active" id="view-stud-search">
+        <div class="hero-card">
+          <h1>Find Your Dream Internship</h1>
+          <p>Explore thousands of high-quality roles screened and scored with AI intelligence.</p>
+          
+          <div class="search-bar-wrap">
+            <input type="text" id="search-input" placeholder="Search by role title, company, skills..." oninput="filterInternships()" />
+            <select id="location-filter" onchange="filterInternships()">
+              <option value="">All Locations</option>
+              <option value="remote">Remote</option>
+              <option value="office">Office-based</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">Available Internships (<span id="internship-count">0</span>)</h2>
+          <div class="internships-grid" id="internships-list">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Student View: My Applications -->
+      <section class="view" id="view-stud-applications">
+        <div class="view-header">
+          <div>
+            <h1>My Applied Internships</h1>
+            <p>Track statuses and review AI screening feedback for your submissions.</p>
+          </div>
+        </div>
+        
+        <div class="apps-list" id="student-apps-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- Student View: Question Bank Prep -->
+      <section class="view" id="view-stud-prep">
+        <div class="view-header">
+          <div>
+            <h1>Interview Question Bank</h1>
+            <p>Prepare for your technical rounds with core questions and interactive mock interview practice.</p>
+          </div>
+        </div>
+        
+        <div class="prep-layout">
+          <div class="prep-categories" id="prep-categories-list">
+            <!-- Rendered dynamically -->
+          </div>
+          <div class="prep-questions-card glass-card">
+            <div style="margin-bottom: 1.5rem; display:flex; gap:10px;">
+              <input type="text" id="prep-search-input" placeholder="Search questions or keywords..." class="meta-input" oninput="filterPrepQuestions()" />
+            </div>
+            <h3 id="prep-category-title" style="font-size: 1.2rem; color: white; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-2); padding-bottom: 0.75rem;">Category Questions</h3>
+            <div id="prep-questions-list" style="display:flex; flex-direction:column; gap:0.5rem;">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    </div>
+
+    <!-- ──────────────────────────────────────────
+         EMPLOYER VIEWPORT
+    ────────────────────────────────────────── -->
+    <div id="portal-employer" class="portal-viewport" style="display:none;">
+      
+      <!-- Employer View: Manage Postings -->
+      <section class="view active" id="view-emp-roles">
+        <div class="view-header">
+          <div>
+            <h1>Dashboard & Postings</h1>
+            <p>Select a posting to review candidates and trigger AI evaluation metrics.</p>
+          </div>
+        </div>
+        
+        <div class="role-selector-row">
+          <label for="emp-role-select" style="font-weight: 600; font-size: 0.9rem;">Select Internship Posting:</label>
+          <select id="emp-role-select" onchange="loadEmployerRoleApplicants()" class="meta-input">
+            <!-- Dynamic options -->
+          </select>
+        </div>
+
+        <div class="dashboard-stats" style="margin-top:1.5rem;">
+          <div class="stat-card">
+            <div class="stat-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div>
+              <div class="stat-value" id="stat-total-apps">0</div>
+              <div class="stat-label">Total Applicants</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div>
+              <div class="stat-value" id="stat-screened-apps">0</div>
+              <div class="stat-label">Screened by AI</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <div>
+              <div class="stat-value" id="stat-average-score">0%</div>
+              <div class="stat-label">Average Match Score</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem;" class="glass-card">
+          <div style="display:flex;justify-content:between;align-items:center;margin-bottom:1.5rem;">
+            <h3 style="font-size:1.1rem;color:white;">Candidate Evaluations</h3>
+            <button class="btn-primary" id="btn-screen" onclick="triggerAIScreening()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Run AI Screen
+            </button>
+          </div>
+
+          <div id="pipeline-progress" class="pipeline-progress" style="display:none;">
+            <div class="pipeline-progress-header">
+              <span id="pipeline-status-step">Running evaluations...</span>
+              <span class="spinner"></span>
+            </div>
+            <div class="pipeline-logs" id="pipeline-logs-box"></div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="candidates-table">
+              <thead>
+                <tr>
+                  <th>Applicant Name</th>
+                  <th>Email</th>
+                  <th>Applied At</th>
+                  <th>AI Score</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="employer-applicants-list">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Employer View: Post New Internship -->
+      <section class="view" id="view-emp-post">
+        <div class="view-header">
+          <div>
+            <h1>Post a New Internship</h1>
+            <p>Complete the details below to launch a new internship listing.</p>
+          </div>
+        </div>
+        
+        <div class="glass-card form-wrap" style="max-width: 700px; display:flex; flex-direction:column; gap:1.25rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Internship Title</label>
+              <input type="text" id="post-title" placeholder="e.g. Backend Developer Intern" class="meta-input" />
+            </div>
+            <div class="form-group">
+              <label>Company Name</label>
+              <input type="text" id="post-company" placeholder="e.g. Nexus Corp" class="meta-input" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category</label>
+              <select id="post-category" class="meta-input">
+                <option value="Frontend Development">Frontend Development</option>
+                <option value="Backend Development">Backend Development</option>
+                <option value="Data Science / ML">Data Science / ML</option>
+                <option value="Product Management">Product Management</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <input type="text" id="post-location" placeholder="e.g. Remote, Bangalore Office" class="meta-input" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Duration</label>
+              <input type="text" id="post-duration" placeholder="e.g. 6 Months" class="meta-input" />
+            </div>
+            <div class="form-group">
+              <label>Monthly Stipend</label>
+              <input type="text" id="post-stipend" placeholder="e.g. ₹20,000 / month" class="meta-input" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Required Skills (comma separated)</label>
+            <input type="text" id="post-skills" placeholder="e.g. Python, SQL, Docker, Git" class="meta-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Role Description</label>
+            <textarea id="post-desc" rows="4" placeholder="Detail tasks, project scope, and weekly commitments..." class="meta-input"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Eligibility Criteria</label>
+            <textarea id="post-eligibility" rows="3" placeholder="Degree, year of graduation, experience prerequisites..." class="meta-input"></textarea>
+          </div>
+
+          <button class="btn-primary" onclick="submitNewInternship()" style="align-self: flex-start; margin-top: 1rem;">Publish Internship</button>
+        </div>
+      </section>
+      
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STUDENT APPLICATION DRAWER / MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="app-modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-container" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModalDirect()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <h3 style="font-size:1.3rem;color:white;margin-bottom:0.25rem;">Apply for Internship</h3>
+      <p style="font-size:0.85rem;color:var(--text-2);" id="app-modal-sub"></p>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; flex-direction:column; gap:1.2rem;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="app-name" placeholder="E.g. Mohit Jain" class="meta-input" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="app-email" placeholder="mohit.jain@example.com" class="meta-input" />
+        </div>
+        <div class="form-group">
+          <label>Upload PDF Resume</label>
+          <div class="drop-zone" id="drop-zone">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px;color:var(--purple);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div style="font-size:0.85rem;font-weight:600;">Drag and drop resume here</div>
+            <div style="font-size:0.75rem;color:var(--text-3);margin-top:4px;">Accepts PDF formats up to 5MB</div>
+            <input type="file" id="file-input" accept="application/pdf" style="display:none;" onchange="handleFileSelect(event)" />
+          </div>
+          <div id="file-selected-badge" style="display:none;margin-top:8px;">
+            <!-- Badge container -->
+          </div>
+        </div>
+        <button class="btn-primary" onclick="submitApplication()" id="btn-submit-app" style="margin-top:0.5rem;width:100%;">Submit Application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employer View: Saved Reports -->
+  <section class="view" id="view-emp-saved">
+    <div class="view-header">
+      <div>
+        <h1>Saved Evaluation Reports</h1>
+        <p>Candidate reports saved to this browser's local storage for offline reference.</p>
+      </div>
+    </div>
+    <div class="apps-list" id="saved-reports-container">
+      <!-- Rendered dynamically -->
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     EMPLOYER EVALUATION DETAIL MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="eval-modal" onclick="closeEvalModal(event)">
+  <div class="modal" id="eval-modal-container" onclick="event.stopPropagation()" style="max-width: 600px;">
+    <button class="modal-close" onclick="closeEvalModalDirect()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <h3 style="font-size:1.3rem;color:white;margin-bottom:0.25rem;">AI Candidate Evaluation Report</h3>
+      <p style="font-size:0.85rem;color:var(--text-2);" id="eval-modal-sub"></p>
+    </div>
+    <div class="modal-body" id="eval-modal-body">
+      <!-- Loaded dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SETTINGS MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal(event)">
+  <div class="modal" id="settings-modal-container" onclick="event.stopPropagation()" style="max-width: 450px;">
+    <button class="modal-close" onclick="closeSettingsModalDirect()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <h3 style="font-size:1.3rem;color:white;margin-bottom:0.25rem;">Platform Settings</h3>
+      <p style="font-size:0.85rem;color:var(--text-2);">Manage your Google Gemini API Key context</p>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; flex-direction:column; gap:1.2rem;">
+        <div class="form-group">
+          <label>Google Gemini API Key</label>
+          <div style="position:relative;">
+            <input type="password" id="api-key-input" placeholder="AIzaSy..." class="meta-input" />
+            <button onclick="toggleKeyVisibility()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-2);cursor:pointer;display:flex;align-items:center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="saveApiKey()" style="width:100%;">Save Connection Key</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     AI CAREER COACH CHATBOT DRAWER
+══════════════════════════════════════════ -->
+<button class="chat-trigger-btn" id="chat-trigger" onclick="toggleChatCoach()" title="Ask AI Career Coach" style="display: flex;">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span style="font-size: 0.8rem; font-weight: 700; margin-left: 6px; font-family: 'Outfit', sans-serif;">Career Coach</span>
+</button>
+
+<div class="chat-drawer" id="chat-drawer">
+  <div class="chat-drawer-header">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="logo-icon" style="width:24px;height:24px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div>
+      <span style="font-weight:700;font-size:0.95rem;color:white;">AI Career Coach</span>
+    </div>
+    <button onclick="toggleChatCoach()" style="background:none;border:none;color:var(--text-2);cursor:pointer;font-size:1.1rem;">✕</button>
+  </div>
+  <div class="chat-drawer-body" id="chat-messages-box">
+    <div class="chat-message bot">
+      Hi there! I am your InternIQ Career Coach. Ask me how to bridge your skills gap, improve your resume, or prepare for mock interviews!
+    </div>
+  </div>
+  <div class="chat-drawer-footer">
+    <input type="text" id="chat-input" placeholder="Ask me anything..." onkeydown="handleChatKeydown(event)" class="meta-input" style="flex:1;" />
+    <button class="btn-primary" onclick="sendChatMessage()" style="padding:0.6rem 1.1rem;" id="chat-send-btn">Send</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TOAST
+══════════════════════════════════════════ -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js?v=10"></script>
+</body>
+</html>
